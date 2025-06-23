@@ -3,7 +3,7 @@ const app = express()
 const cors = require('cors')
 require('./config/db')
 require('dotenv').config()
-const cookieParser = require('cookie-parser')
+const router = require('./routes/router')
 
 
 //middlewares
@@ -12,6 +12,7 @@ app.use(cors())
 app.use(express.urlencoded({extended: true}))
 
 
+app.use(router)
 
 
 app.get('/', (req,res)=>{
@@ -19,6 +20,6 @@ app.get('/', (req,res)=>{
 })
 
 app.listen(4000, ()=>{
-    console.log("Server running at port address ");
+    console.log("Server running at port address http://localhost:4000/");
     
 })

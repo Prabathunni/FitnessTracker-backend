@@ -1,5 +1,4 @@
 const mongoose = require('mongoose')
-const bcryt = require('bcrypt')
 
 const userSchema =new mongoose.Schema({
     name: {
@@ -47,27 +46,23 @@ const userSchema =new mongoose.Schema({
         type: String,
         required: true
     },
-    dob: {
-        type: Date,
+    age: {
+        type: Number,
         required: true
     },
     calorieIntake: [
         {
             item: {
                 type: String,
-                required: true
             },
             date: {
                 type: Date,
-                required: true
             },
             quantity: {
                 type: Number,
-                required: true
             },
             quantityType: {
                 type: String,
-                required: true
             },
         }
     ],
@@ -78,22 +73,18 @@ const userSchema =new mongoose.Schema({
     sleep: {
         sleep: {
             type: Date,
-            required: true
         },
         durationInHr:{
             type: String,
-            required: true
         }
     },
     steps:[
         {
             steps:{
                 type: Number,
-                required: true
             },
             date: {
                 type: Date,
-                required: true
             }
         }
     ],
@@ -101,15 +92,12 @@ const userSchema =new mongoose.Schema({
         {
             exercise:{
                 type:String,
-                required: true
             },
             durationInMinutes:{
                 type:Number,
-                required: true
             },
             date:{
                 type: Date,
-                required: true
             }
         }
     ]
