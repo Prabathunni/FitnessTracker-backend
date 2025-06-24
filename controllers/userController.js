@@ -2,6 +2,8 @@ const userModel = require('../model/userModel')
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 require('dotenv').config()
+require('cookie-parser')
+
 
 
 
@@ -72,18 +74,20 @@ exports.loginController = async (req, res) => {
 
             let isMatch = await bcrypt.compare(password, existingUser.password)
 
-            if(isMatch){
-                const token = jwt.sign({userId: existingUser._id}, process.env.jwt_secret)
+            if (isMatch) {
+                const token = jwt.sign({ userId: existingUser._id }, process.env.jwt_secret) // token setup
+
+                res.cookie("token",token) //cookie set up
                 res.status(200).json({
-                    token,existingUser
+                    token, existingUser
                 })
 
-            }else{
+            } else {
                 res.status(404).json("Invalid Password...")
-             
+
             }
-            
-            
+
+
         } else {
             res.status(401).json("Account does not exist...")
         }
@@ -94,4 +98,9 @@ exports.loginController = async (req, res) => {
 
     }
 
+}
+
+
+exports.logoutUserContoller = async (req,res)=>{
+    res.cookie('token',"")
 }
