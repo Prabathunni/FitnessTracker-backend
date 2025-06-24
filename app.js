@@ -10,7 +10,10 @@ const cookieParser = require('cookie-parser')
 //middlewares
 app.use(express.json())
 app.use(cookieParser())
-app.use(cors())
+app.use(cors({
+    origin:'http://localhost:5000',
+    credentials:true
+}))
 app.use(express.urlencoded({extended: true}))
 
 

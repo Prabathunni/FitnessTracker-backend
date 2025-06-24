@@ -77,7 +77,13 @@ exports.loginController = async (req, res) => {
             if (isMatch) {
                 const token = jwt.sign({ userId: existingUser._id }, process.env.jwt_secret) // token setup
 
-                res.cookie("token",token) //cookie set up
+                res.cookie("token", token, {
+                    httpOnly: true,
+                    secure: false,
+                    maxAge: 24 * 60 * 60 * 1000 // 1 day
+                })                   //cookie set up
+
+
                 res.status(200).json({
                     token, existingUser
                 })
@@ -101,6 +107,21 @@ exports.loginController = async (req, res) => {
 }
 
 
-exports.logoutUserContoller = async (req,res)=>{
-    res.cookie('token',"")
+exports.logoutUserContoller = (req, res) => {
+    try {
+        res.clearCookie("token", {
+            httpOnly: true,
+            secure: false,
+        })
+
+        res.status(200).json("logout successfull")
+
+
+    } catch (error) {
+
+        res.status(500).json({ message: "error bro", error })
+
+    }
 }
+
+

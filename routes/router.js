@@ -2,6 +2,7 @@ const express = require('express')
 const router = express.Router();
 const { registerController, loginController, logoutUserContoller } = require('../controllers/userController');
 const jwtMiddleware = require('../middleware/jwtMiddleware');
+const {verifyToken, protectedRoutesController } = require('../controllers/verifyController');
 
 
 
@@ -11,13 +12,11 @@ router.post('/register', registerController)
 router.post('/login', loginController)
 
 
-router.get('/checklogin', jwtMiddleware, (req, res) => {
-    res.json({ message: "Access granted", userId: req.userId });
-})
+router.get('/checklogin', jwtMiddleware, protectedRoutesController )
 
+router.get('/verifytoken', verifyToken )
 
-router.post('/logout', jwtMiddleware, logoutUserContoller )
-
+router.get('/logout', logoutUserContoller)
 
 
 
