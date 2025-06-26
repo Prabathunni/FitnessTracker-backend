@@ -4,6 +4,7 @@ const { registerController, loginController, logoutUserContoller } = require('..
 const jwtMiddleware = require('../middleware/jwtMiddleware');
 const {verifyToken, protectedRoutesController } = require('../controllers/verifyController');
 const allMuscleGroup = require('../controllers/muscleGroupController');
+const setCalorieInTake = require('../controllers/CalorieController');
 
 
 
@@ -24,6 +25,10 @@ router.get('/logout',jwtMiddleware, logoutUserContoller)
 
 // get All muscle groups
 router.get('/musclegroups',jwtMiddleware, allMuscleGroup)
+
+// setUp CAlorieIntake
+router.post('/calories',jwtMiddleware, setCalorieInTake)
+
 
 
 

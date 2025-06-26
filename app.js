@@ -11,10 +11,9 @@ const cookieParser = require('cookie-parser')
 app.use(express.json())
 app.use(cookieParser())
 app.use(cors({
-    origin:'http://localhost:5000',
+    origin:'http://localhost:5000',  //seting up the frontend default port address for cross over 
     credentials:true
 }))
-app.use(express.urlencoded({extended: true}))
 
 
 app.use(router)

@@ -12,7 +12,7 @@ exports.registerController = async (req, res) => {
     console.log("in register controller");
     try {
 
-        const { name, email, password, gender, age, weightInKg, heightInCm, goal, calorieIntake, activityLevel, sleep, steps, workouts } = req.body;
+        const { name, email, password, gender, age, weightInKg, heightInCm, goal, calorieIntake, activityLevel, sleep, workouts } = req.body;
 
         const existingUser = await userModel.findOne({ email });
 

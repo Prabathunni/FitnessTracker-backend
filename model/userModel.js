@@ -52,18 +52,8 @@ const userSchema =new mongoose.Schema({
     },
     calorieIntake: [
         {
-            item: {
-                type: String,
-            },
-            date: {
-                type: Date,
-            },
-            quantity: {
-                type: Number,
-            },
-            quantityType: {
-                type: String,
-            },
+           type:mongoose.Schema.Types.ObjectId,
+           ref: 'calories'
         }
     ],
     activityLevel: {
@@ -78,16 +68,6 @@ const userSchema =new mongoose.Schema({
             type: String,
         }
     },
-    steps:[
-        {
-            steps:{
-                type: Number,
-            },
-            date: {
-                type: Date,
-            }
-        }
-    ],
     workouts: [
         {
             exercise:{
