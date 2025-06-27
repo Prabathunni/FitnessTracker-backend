@@ -18,7 +18,8 @@ const calorieSchema = new mongoose.Schema({
         default: Date.now,
         required:true
     },
-    
+    calorieInTake:Number,
+    proteinInTake:Number,
     // Reference to user
     user:{
         type:mongoose.Schema.Types.ObjectId,
