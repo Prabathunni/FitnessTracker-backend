@@ -1,0 +1,110 @@
+[
+    {
+        "name": "Puttu",
+        "serving_size_g": 100,
+        "calories": 180,
+        "protein_g": 3
+    },
+    {
+        "name": "Kadala Curry",
+        "serving_size_g": 150,
+        "calories": 210,
+        "protein_g": 9
+    },
+    {
+        "name": "Appam",
+        "serving_size_g": 80,
+        "calories": 120,
+        "protein_g": 2
+    },
+    {
+        "name": "Stew",
+        "serving_size_g": 150,
+        "calories": 160,
+        "protein_g": 8
+    },
+    {
+        "name": "Idiyappam",
+        "serving_size_g": 100,
+        "calories": 150,
+        "protein_g": 2.5
+    },
+    {
+        "name": "Fish Curry",
+        "serving_size_g": 100,
+        "calories": 140,
+        "protein_g": 15
+    },
+    {
+        "name": "Beef Fry",
+        "serving_size_g": 100,
+        "calories": 250,
+        "protein_g": 20
+    },
+    {
+        "name": "Parotta",
+        "serving_size_g": 120,
+        "calories": 320,
+        "protein_g": 5
+    },
+    {
+        "name": "Avial",
+        "serving_size_g": 100,
+        "calories": 110,
+        "protein_g": 2
+    },
+    {
+        "name": "Rice",
+        "serving_size_g": 100,
+        "calories": 110,
+        "protein_g": 2.5
+    },
+    {
+        "name": "Sambar",
+        "serving_size_g": 150,
+        "calories": 130,
+        "protein_g": 6
+    },
+    {
+        "name": "Thoran",
+        "serving_size_g": 100,
+        "calories": 100,
+        "protein_g": 2
+    },
+    {
+        "name": "Payasam",
+        "serving_size_g": 150,
+        "calories": 250,
+        "protein_g": 4
+    },
+    {
+        "name": "Banana Chips",
+        "serving_size_g": 50,
+        "calories": 300,
+        "protein_g": 1
+    },
+    {
+        "name": "Tapioca with Fish Curry",
+        "serving_size_g": 200,
+        "calories": 280,
+        "protein_g": 12
+    },
+    {
+        "name": "Egg",
+        "serving_size_g": 50,
+        "calories": 68,
+        "protein_g": 6
+    },
+    {
+        "name": "Chammanthi",
+        "serving_size_g": 50,
+        "calories": 80,
+        "protein_g": 1
+    },
+    {
+        "name": "Meen Pollichathu",
+        "serving_size_g": 120,
+        "calories": 190,
+        "protein_g": 17
+    }
+]
