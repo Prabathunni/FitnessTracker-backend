@@ -190,30 +190,122 @@ exports.getCalorieByLimit = async (req, res) => {
 
 exports.deleteCalorie = async (req, res) => {
     // CURRENTLY UPDATION FOR LATER...
- }
+}
 
-exports.getGoalCalorie = async (req, res) => { 
+exports.getGoalCalorie = async (req, res) => {
     console.log("inside get Goal calorie controller...");
 
     try {
 
-        const userData = await userModel.findById(req.userId)
-        const newUserData = userData.weight.sort((a, b) => new Date(b.date) - new Date(a.date))[0]  // descending ordering the array to get latest weight on basis of date
 
-        if(newUserData.length==0){
-            res.status(404).json(createResponse(false,"Please provide weight",null))
+        // ----------------------------for GOAL CALORIE Fetching
+        const activityFactors = {
+            sedentary: 1.2,
+            light: 1.375,
+            moderate: 1.55,
+            active: 1.725,
+            very_active: 1.9
+        };
+
+        const userData = await userModel.findById(req.userId)
+        const weightSortArr = userData.weight.sort((a, b) => new Date(b.date) - new Date(a.date))[0]  // descending ordering the array to get latest weight on basis of date
+        const heightSortArr = userData.height.sort((a, b) => new Date(b.date) - new Date(a.date))[0]  // descending ordering the array to get latest weight on basis of date
+
+        const weight = weightSortArr.weight;
+        const height = heightSortArr.height;
+        const gender = userData.gender;
+        const goal = userData.goal;
+        const age = userData.age;
+        const activity = userData.activityLevel;
+        const activityMultiplier = activityFactors[activity];
+
+
+        let BMR = 0;
+
+        if (gender == "male") {
+            BMR = (10 * weight) + (6.25 * height) - (5 * age) + 5;
+
+        } else if (gender == "female") {
+            BMR = (10 * weight) + (6.25 * height) - (5 * age) - 161;
+
+        } else if (gender == "other") {
+            BMR = (10 * weight) + (6.25 * height) - (5 * age) - 161;
+
+        } else {
+            return res.status(404).json(createResponse(false, "gender cannot be found..", null))
         }
 
-        res.status(200).json(newUserData)
-        
+        let goalCalorieTarget = BMR * activityMultiplier;
+
+        if (goal==="weight gain") {
+            goalCalorieTarget += 500;
+        } else if(goal==="weightLoss") {
+            goalCalorieTarget -= 500;
+        } else if(goal==="maintainWeight") {
+            goalCalorieTarget = BMR;
+        } else {
+            res.status(404).json(createResponse(false, goal, null))
+
+        }
+
+
+
+        // ----------------------------------------- get total calories of that Latest day
+        const userCalories = await calorieIntakeModel.find({
+            user: req.userId
+        })
+
+
+        // Step 1: Find the latest date
+        const latestEntry = userCalories.reduce((latest, current) =>
+            new Date(current.date) > new Date(latest.date) ? current : latest
+        );
+
+        const latestDate = new Date(latestEntry.date);
+
+        // Step 2: Filter all entries with the same date (ignoring time)
+        const latestDateOnly = new Date(
+            latestDate.getFullYear(),
+            latestDate.getMonth(),
+            latestDate.getDate()
+        );
+
+        const entriesOnLatestDate = userCalories.filter(entry => {
+            const entryDate = new Date(entry.date);
+            return (
+                entryDate.getFullYear() === latestDateOnly.getFullYear() &&
+                entryDate.getMonth() === latestDateOnly.getMonth() &&
+                entryDate.getDate() === latestDateOnly.getDate()
+            );
+        });
+
+        // Step 3: Sum the calories
+        const totalCaloriesOnTheDay = entriesOnLatestDate.reduce((sum, entry) => sum + entry.calorieInTake, 0);
+
+
+        res.status(200).json({ CaloriePerDay: Math.round(totalCaloriesOnTheDay), finalTargetCalorie: Math.round(goalCalorieTarget) })
+
+
+
+        if (!activityMultiplier) {
+            return res.status(400).json(createResponse(false, "Invalid activity level", null));
+        }
+        if (userCalories.length == 0) {
+            res.status(404).json(createResponse(false, "No calorie intake today", null))
+        }
+        if (weightSortArr.length == 0 || heightSortArr.length == 0 || goal == "" || gender == "") {
+            res.status(404).json(createResponse(false, "Please provide the weight/height/goal/gender", null))
+        }
+
+
     } catch (error) {
 
-        res.status(500).json(createResponse(false,"something went wrong",error.message))
-        
+        res.status(500).json(createResponse(false, "something went wrong", error.message))
+
     }
 
-    
- }
+
+}
 
 
 function createResponse(ok, response, error) {
