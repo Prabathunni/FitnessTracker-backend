@@ -76,6 +76,10 @@ exports.addCalorieIntake = async (req, res) => {
 exports.getCalorieByDate = async (req, res) => {
     console.log("inside get calorie by Date controller");
     const { date } = req.body;
+    if (!date) {
+        res.status(404).json(createResponse(false, "provide date,sleep In Hr", null))
+    }
+
 
     try {
         const searchDate = new Date(date)
@@ -237,11 +241,11 @@ exports.getGoalCalorie = async (req, res) => {
 
         let goalCalorieTarget = BMR * activityMultiplier;
 
-        if (goal==="weight gain") {
+        if (goal === "weight gain") {
             goalCalorieTarget += 500;
-        } else if(goal==="weightLoss") {
+        } else if (goal === "weightLoss") {
             goalCalorieTarget -= 500;
-        } else if(goal==="maintainWeight") {
+        } else if (goal === "maintainWeight") {
             goalCalorieTarget = BMR;
         } else {
             res.status(404).json(createResponse(false, goal, null))
