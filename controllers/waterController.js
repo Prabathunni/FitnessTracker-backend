@@ -122,10 +122,10 @@ exports.getGoalWaterIntake = async (req, res) => {
 
         // To find total water in take in that day
         const user = await userModel.findById(req.userId)
-        const userWaterArr = user.waterIntake;
+        const userWaterArr = user.waterIntake;        
 
         if (userWaterArr.length > 0) {
-            let totalWaterOfDay = getTotalSleep(userWaterArr)
+            let totalWaterOfDay = getTotalWater(userWaterArr)
             return res.status(200).json(createResponse(true, { totalWaterOfDay, goalWaterIntake }))
 
         } else {
@@ -141,7 +141,7 @@ exports.getGoalWaterIntake = async (req, res) => {
 }
 
 
-function getTotalSleep(entries) {
+function getTotalWater(entries) {
 
     // find the latest date
     const dates = entries.map(entry => new Date(entry.date).toDateString())

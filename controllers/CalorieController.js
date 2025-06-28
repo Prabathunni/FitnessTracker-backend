@@ -249,7 +249,7 @@ exports.getGoalCalorie = async (req, res) => {
         } else if (goal === "maintainWeight") {
             goalCalorieTarget = BMR;
         } else {
-            res.status(404).json(createResponse(false, goal, null))
+            res.status(404).json(createResponse(false, "provide Goal", null))
 
         }
 
