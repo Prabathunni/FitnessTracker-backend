@@ -5,6 +5,7 @@ const jwtMiddleware = require('../middleware/jwtMiddleware');
 const {verifyToken, protectedRoutesController } = require('../controllers/verifyController');
 const allMuscleGroup = require('../controllers/muscleGroupController');
 const { addCalorieIntake, getCalorieByDate, getCalorieByLimit, getGoalCalorie } = require('../controllers/CalorieController');
+const { addSleepController } = require('../controllers/SleepController');
 
 
 
@@ -38,6 +39,11 @@ router.post('/caloriebylimit',jwtMiddleware, getCalorieByLimit)
 
 // Get GoalCalorie
 router.get('/goalcalorie',jwtMiddleware, getGoalCalorie)
+
+
+// ---------------------SLEEP ROUTER-----------------------
+// ADD sleep
+router.post('/addsleep',jwtMiddleware,addSleepController)
 
 
 

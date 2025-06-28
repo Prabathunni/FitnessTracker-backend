@@ -60,14 +60,16 @@ const userSchema =new mongoose.Schema({
         type: String,
         required: true
     },
-    sleep: {
-        sleep: {
+    sleep: [
+        {
+            date: {
             type: Date,
         },
         durationInHr:{
-            type: String,
+            type: Number,
         }
-    },
+    }
+    ],
     workouts: [
         {
             exercise:{
