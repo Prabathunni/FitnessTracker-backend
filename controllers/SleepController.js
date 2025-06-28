@@ -106,7 +106,7 @@ exports.getSleepByLimit = async (req, res) => {
 
                 break;
             default:
-                res.status(403).json(createResponse(false, "limit not matched", null))
+                return res.status(403).json(createResponse(false, "limit not matched", null))
 
         }
 

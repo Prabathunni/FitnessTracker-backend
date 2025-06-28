@@ -6,7 +6,7 @@ const {verifyToken, protectedRoutesController } = require('../controllers/verify
 const allMuscleGroup = require('../controllers/muscleGroupController');
 const { addCalorieIntake, getCalorieByDate, getCalorieByLimit, getGoalCalorie } = require('../controllers/CalorieController');
 const { addSleepController, getSleepByDate, getSleepByLimit, getGoalSleep } = require('../controllers/SleepController');
-const { addWaterIntakecontroller, getWaterByDate } = require('../controllers/waterController');
+const { addWaterIntakecontroller, getWaterByDate, getWaterByLimit } = require('../controllers/waterController');
 
 
 
@@ -62,6 +62,9 @@ router.post('/addwater',jwtMiddleware,addWaterIntakecontroller)
 
 // get water by date
 router.post('/getwaterbydate',jwtMiddleware,getWaterByDate)
+
+// get water by limit
+router.post('/getwaterbylimit',jwtMiddleware,getWaterByLimit)
 
 
 
