@@ -60,7 +60,86 @@ exports.getWeightbyDate = async (req, res) => {
 
 }
 
+exports.getWeightByLimit = async (req, res) => {
+    console.log("Inside Set weight by limit controller...");
 
+    try {
+        const { limit } = req.body;
+        if (!limit) {
+            res.status(404).json(createResponse(false, "provide limit", null))
+        }
+
+        const user = await userModel.findById(req.userId)
+
+        switch (limit) {
+            case "all":
+                if (user.weight.length == 0) {
+                    res.status(404).json(createResponse(false, "No weight Records found", null))
+                }
+
+                res.status(200).json(createResponse(true,user.weight,null))
+
+                break;
+            case "last7days":
+                const userWeightArr = user.weight;
+                if (userWeightArr.length == 0) {
+                    res.status(404).json(createResponse(false, "No sleep Records found", null))
+                }
+
+                const userWeightByLimit = getLastDaysEntries(userWeightArr, 7)
+                if (userWeightByLimit.length == 0) {
+                    res.status(404).json(createResponse(false, "No Records found", null))
+                }
+
+
+                res.status(200).json(createResponse(true, userWeightByLimit, null))
+
+                break;
+            case "last10days":
+                const userWeightArrFor10 = user.weight;
+                if (userWeightArrFor10.length == 0) {
+                    res.status(404).json(createResponse(false, "No weight Records found", null))
+                }
+
+                const userWeightbyTenLimit = getLastDaysEntries(userWeightArrFor10, 10)
+                if (userWeightbyTenLimit.length == 0) {
+                    res.status(404).json(createResponse(false, "No Records found", null))
+                }
+                res.status(200).json(createResponse(true, userWeightbyTenLimit, null))
+
+                break;
+            default:
+                return res.status(403).json(createResponse(false, "limit not matched", null))
+
+        }
+
+
+
+    } catch (error) {
+        res.status(500).json(createResponse(false, "something went wrong", error.message))
+
+    }
+
+
+}
+
+
+
+
+
+function getLastDaysEntries(entries, numberOfDays) {
+    const now = new Date();
+    const startDay = new Date();
+    startDay.setDate(now.getDate() - numberOfDays)
+
+    return (entries.filter((entry) => {
+        const entryDate = new Date(entry.date);
+        return (
+            entryDate >= startDay && entryDate <= now
+        )
+    })
+    )
+}
 
 function filterByDate(entries, neededDate) {
     return (
