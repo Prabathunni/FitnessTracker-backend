@@ -1,11 +1,12 @@
 const express = require('express')
 const router = express.Router();
-const { registerController, loginController, logoutUserContoller } = require('../controllers/userController');
+const { registerController, loginController, logoutUserContoller, adminRegisterController, adminLoginController } = require('../controllers/userController');
 const jwtMiddleware = require('../middleware/jwtMiddleware');
 const {verifyToken, protectedRoutesController } = require('../controllers/verifyController');
 const allMuscleGroup = require('../controllers/muscleGroupController');
 const { addCalorieIntake, getCalorieByDate, getCalorieByLimit, getGoalCalorie } = require('../controllers/CalorieController');
 const { addSleepController, getSleepByDate, getSleepByLimit, getGoalSleep } = require('../controllers/SleepController');
+const { addWaterIntakecontroller } = require('../controllers/waterController');
 
 
 
@@ -54,6 +55,16 @@ router.post('/sleepbylimit',jwtMiddleware,getSleepByLimit)
 // Get sleep by Goal
 router.get('/sleepbygoal',jwtMiddleware,getGoalSleep)
 
+
+// -------------------------waterintake---------
+router.post('/addwater',jwtMiddleware,addWaterIntakecontroller)
+
+
+
+
+// ------------------ADMIN------------------------
+router.post('/registeradmin',adminRegisterController)
+router.post('/loginadmin',adminLoginController)
 
 
 

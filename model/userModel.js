@@ -82,6 +82,16 @@ const userSchema =new mongoose.Schema({
                 type: Date,
             }
         }
+    ],
+    waterIntake:[
+        {
+            date:{
+                type:Date,
+            },
+            waterTakenInMl:{
+                type:Number
+            }
+        }
     ]
 
 }, { timestamps: true })
