@@ -7,7 +7,7 @@ const allMuscleGroup = require('../controllers/muscleGroupController');
 const { addCalorieIntake, getCalorieByDate, getCalorieByLimit, getGoalCalorie } = require('../controllers/CalorieController');
 const { addSleepController, getSleepByDate, getSleepByLimit, getGoalSleep } = require('../controllers/SleepController');
 const { addWaterIntakecontroller, getWaterByDate, getWaterByLimit, getGoalWaterIntake } = require('../controllers/waterController');
-const { addWeightController, getWeightbyDate, getWeightByLimit } = require('../controllers/weightContoller');
+const { addWeightController, getWeightbyDate, getWeightByLimit, getGoalWeigtht } = require('../controllers/weightContoller');
 
 
 
@@ -80,6 +80,9 @@ router.post('/getweightbydate', jwtMiddleware, getWeightbyDate)
 
 // get weight by limit
 router.post('/getweightbylimit', jwtMiddleware, getWeightByLimit)
+
+// get goal weight
+router.post('/getgoalweight', jwtMiddleware, getGoalWeigtht)
 
 
 

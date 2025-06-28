@@ -77,7 +77,7 @@ exports.getWeightByLimit = async (req, res) => {
                     res.status(404).json(createResponse(false, "No weight Records found", null))
                 }
 
-                res.status(200).json(createResponse(true,user.weight,null))
+                res.status(200).json(createResponse(true, user.weight, null))
 
                 break;
             case "last7days":
@@ -123,6 +123,38 @@ exports.getWeightByLimit = async (req, res) => {
 
 }
 
+
+exports.getGoalWeigtht = async (req, res) => {
+    console.log("Inside get goal weight controller");
+
+    try {
+
+        const { goalWeight } = req.body;
+        if (!goalWeight) {
+            res.status(404).json(createResponse(false, "Provide Goal Weight!", null))
+        }
+
+        // to find latest weight
+        const user = await userModel.findById(req.userId)
+        const userWeightArr = user.weight;
+        if (userWeightArr == 0) {
+            res.status(404).json(createResponse(false, "No Record found", null))
+        }
+
+        const latestuserArr = userWeightArr.sort((a, b) => b.date - a.date)[0]
+        const latestWeight = latestuserArr.weight;
+
+        res.status(200).json(createResponse(true, {latestWeight, goalWeight}, null))
+
+
+
+    } catch (error) {
+        res.status(500).json(createResponse(false, "something went wrong", error.message))
+
+    }
+
+
+}
 
 
 
