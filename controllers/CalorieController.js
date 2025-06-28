@@ -196,6 +196,7 @@ exports.deleteCalorie = async (req, res) => {
     // CURRENTLY UPDATION FOR LATER...
 }
 
+// bug found-----needed goal calorie even user not provided calorie details
 exports.getGoalCalorie = async (req, res) => {
     console.log("inside get Goal calorie controller...");
 

@@ -1,3 +1,4 @@
+const { response } = require('express');
 const userModel = require('../model/userModel')
 
 
@@ -121,9 +122,50 @@ exports.getSleepByLimit = async (req, res) => {
 
 exports.getGoalSleep = async (req, res) => {
     console.log("Inside the add sleep controller..");
+    try {
+
+        let targetSleepInHrs = 8;
+
+        // to find the total slept hrs 
+        const user = await userModel.findById(req.userId)
+        const userSleepArr = user.sleep;
+
+        if (userSleepArr.length > 0) {
+            let totalSleepForTheDay = getTotalSleep(userSleepArr)
+            return res.status(200).json(createResponse(true, { totalSleepForTheDay, targetSleepInHrs }))
+
+        } else {
+            return res.status(200).json(createResponse(true, { totalSleepForTheDay: totalSleepForTheDay = 0, targetSleepInHrs }))
+        }
+
+
+
+    } catch (error) {
+        res.status(500).json(createResponse(false, "something went wrong", error.message))
+
+    }
 
 }
 
+
+function getTotalSleep(entries) {
+
+    // find the latest date
+    const dates = entries.map(entry => new Date(entry.date).toDateString())
+    const latestDate = dates.sort((a, b) => new Date(b) - new Date(a))[0];
+
+    //  filter the entries with latest date
+    const latestEntires = entries.filter((entry) => {
+        return new Date(entry.date).toDateString() === latestDate;
+    })
+
+    //  calculate total sleep durationInHr ( logic for total calculation )
+
+    const totalSleep = latestEntires.reduce((sum, entry) => sum + entry.durationInHr, 0)
+
+    return totalSleep;
+
+}
 
 
 function getLastDaysEntries(entries, numberOfDays) {
