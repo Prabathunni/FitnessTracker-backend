@@ -42,12 +42,12 @@ exports.getSleepByDate = async (req, res) => {
         const user = await userModel.findById(req.userId)
         const userSleepByDate = filterByDate(user.sleep, date)
 
-        if (userSleepByDate==0) {
+        if (userSleepByDate == 0) {
             res.status(404).json(createResponse(false, "No Record found on the day", null))
         }
 
 
-        res.status(200).json(createResponse(true,userSleepByDate,null))
+        res.status(200).json(createResponse(true, userSleepByDate, null))
 
 
     } catch (error) {
@@ -60,13 +60,85 @@ exports.getSleepByDate = async (req, res) => {
 exports.getSleepByLimit = async (req, res) => {
     console.log("Inside the add sleep controller..");
 
+    try {
+        const { limit } = req.body;
+        if (!limit) {
+            res.status(404).json(createResponse(false, "provide limit", null))
+        }
+
+        const user = await userModel.findById(req.userId)
+
+        switch (limit) {
+            case "all":
+                if (user.sleep.length == 0) {
+                    res.status(404).json(createResponse(false, "No sleep Records found", null))
+                }
+
+                res.status(200).json(user.sleep)
+                break;
+            case 'last7days':
+                const userSleepArr = user.sleep;
+                if (userSleepArr.length == 0) {
+                    res.status(404).json(createResponse(false, "No sleep Records found", null))
+                }
+
+                const userSleepByLimit = getLastDaysEntries(userSleepArr, 7)
+                if (userSleepByLimit.length == 0) {
+                    res.status(404).json(createResponse(false, "No Records found", null))
+                }
+
+
+                res.status(200).json(createResponse(true, userSleepByLimit, null))
+
+                break;
+            case 'last10days':
+                const userSleepArrFor10 = user.sleep;
+                if (userSleepArrFor10.length == 0) {
+                    res.status(404).json(createResponse(false, "No sleep Records found", null))
+                }
+
+                const userSleepByTenLimit = getLastDaysEntries(userSleepArrFor10, 10)
+                if (userSleepByTenLimit.length == 0) {
+                    res.status(404).json(createResponse(false, "No Records found", null))
+                }
+                res.status(200).json(createResponse(true, userSleepByTenLimit, null))
+
+                break;
+            default:
+                res.status(403).json(createResponse(false, "limit not matched", null))
+
+        }
+
+
+
+    } catch (error) {
+        res.status(500).json(createResponse(false, "something went wrong", error.message))
+
+    }
+
 }
+
+
 exports.getGoalSleep = async (req, res) => {
     console.log("Inside the add sleep controller..");
 
 }
 
 
+
+function getLastDaysEntries(entries, numberOfDays) {
+    const now = new Date();
+    const startDay = new Date();
+    startDay.setDate(now.getDate() - numberOfDays)
+
+    return (entries.filter((entry) => {
+        const entryDate = new Date(entry.date);
+        return (
+            entryDate >= startDay && entryDate <= now
+        )
+    })
+    )
+}
 
 
 function filterByDate(entries, neededDate) {
