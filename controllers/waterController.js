@@ -18,7 +18,7 @@ exports.addWaterIntakecontroller = async (req, res) => {
         })
         await user.save()
 
-        res.status(200).json(createResponse(true, user, null))
+        res.status(200).json(createResponse(true, "Water Intake added successfully", null))
 
     } catch (error) {
         res.status(500).json(createResponse(false, "something went wrong", error.message))
@@ -118,18 +118,26 @@ exports.getWaterByLimit = async (req, res) => {
 exports.getGoalWaterIntake = async (req, res) => {
     console.log("Inside get goal water controller");
     try {
-        let goalWaterIntake = 3000;
+        const user = await userModel.findById(req.userId)
+
+        let goalWaterIntake;
+        if(user.gender=='male'){
+            goalWaterIntake=3700
+        }else{
+            goalWaterIntake=2700
+        }
+        
+
 
         // To find total water in take in that day
-        const user = await userModel.findById(req.userId)
-        const userWaterArr = user.waterIntake;        
+        const userWaterArr = user.waterIntake;
 
         if (userWaterArr.length > 0) {
             let totalWaterOfDay = getTotalWater(userWaterArr)
             return res.status(200).json(createResponse(true, { totalWaterOfDay, goalWaterIntake }))
 
         } else {
-            res.status(200).json(createResponse(true, { totalWaterOfDay: totalWaterOfDay=0, goalWaterIntake }, null))
+            res.status(200).json(createResponse(true, { totalWaterOfDay: totalWaterOfDay = 0, goalWaterIntake }, null))
         }
 
 

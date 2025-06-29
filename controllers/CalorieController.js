@@ -192,8 +192,9 @@ exports.getCalorieByLimit = async (req, res) => {
 
 }
 
-exports.deleteCalorie = async (req, res) => {
     // CURRENTLY UPDATION FOR LATER...
+exports.deleteCalorie = async (req, res) => {
+    // 
 }
 
 // bug found-----needed goal calorie even user not provided calorie details
@@ -242,7 +243,7 @@ exports.getGoalCalorie = async (req, res) => {
 
         let goalCalorieTarget = BMR * activityMultiplier;
 
-        if (goal === "weight gain") {
+        if (goal === "weightGain") {
             goalCalorieTarget += 500;
         } else if (goal === "weightLoss") {
             goalCalorieTarget -= 500;
@@ -253,42 +254,7 @@ exports.getGoalCalorie = async (req, res) => {
 
         }
 
-
-
-        // ----------------------------------------- get total calories of that Latest day
-        const userCalories = await calorieIntakeModel.find({
-            user: req.userId
-        })
-
-
-        // Step 1: Find the latest date
-        const latestEntry = userCalories.reduce((latest, current) =>
-            new Date(current.date) > new Date(latest.date) ? current : latest
-        );
-
-        const latestDate = new Date(latestEntry.date);
-
-        // Step 2: Filter all entries with the same date (ignoring time)
-        const latestDateOnly = new Date(
-            latestDate.getFullYear(),
-            latestDate.getMonth(),
-            latestDate.getDate()
-        );
-
-        const entriesOnLatestDate = userCalories.filter(entry => {
-            const entryDate = new Date(entry.date);
-            return (
-                entryDate.getFullYear() === latestDateOnly.getFullYear() &&
-                entryDate.getMonth() === latestDateOnly.getMonth() &&
-                entryDate.getDate() === latestDateOnly.getDate()
-            );
-        });
-
-        // Step 3: Sum the calories
-        const totalCaloriesOnTheDay = entriesOnLatestDate.reduce((sum, entry) => sum + entry.calorieInTake, 0);
-
-
-        res.status(200).json({ CaloriePerDay: Math.round(totalCaloriesOnTheDay), finalTargetCalorie: Math.round(goalCalorieTarget) })
+        res.status(200).json({ goalCalorieTarget: Math.round(goalCalorieTarget) })
 
 
 

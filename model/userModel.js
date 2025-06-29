@@ -1,6 +1,6 @@
 const mongoose = require('mongoose')
 
-const userSchema =new mongoose.Schema({
+const userSchema = new mongoose.Schema({
     name: {
         type: String,
         required: true
@@ -22,6 +22,7 @@ const userSchema =new mongoose.Schema({
             },
             date: {
                 type: Date,
+                default: Date.now,
                 required: true
             }
         }
@@ -34,6 +35,7 @@ const userSchema =new mongoose.Schema({
             },
             date: {
                 type: Date,
+                default: Date.now,
                 required: true
             }
         }
@@ -52,8 +54,8 @@ const userSchema =new mongoose.Schema({
     },
     calorieIntake: [
         {
-           type:mongoose.Schema.Types.ObjectId,
-           ref: 'calories'
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'calories'
         }
     ],
     activityLevel: {
@@ -63,33 +65,33 @@ const userSchema =new mongoose.Schema({
     sleep: [
         {
             date: {
-            type: Date,
-        },
-        durationInHr:{
-            type: Number,
+                type: Date,
+            },
+            durationInHr: {
+                type: Number,
+            }
         }
-    }
     ],
     workouts: [
         {
-            exercise:{
-                type:String,
+            exercise: {
+                type: String,
             },
-            durationInMinutes:{
-                type:Number,
+            durationInMinutes: {
+                type: Number,
             },
-            date:{
+            date: {
                 type: Date,
             }
         }
     ],
-    waterIntake:[
+    waterIntake: [
         {
-            date:{
-                type:Date,
+            date: {
+                type: Date,
             },
-            waterTakenInMl:{
-                type:Number
+            waterTakenInMl: {
+                type: Number
             }
         }
     ]

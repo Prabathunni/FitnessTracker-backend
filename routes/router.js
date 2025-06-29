@@ -11,6 +11,7 @@ const { addWeightController, getWeightbyDate, getWeightByLimit, getGoalWeigtht }
 const checkAdminToken = require('../middleware/checkAdminToken');
 const { addMuscleGroupController, addExercise, getWorkoutById, getAllWorkouts, getAllExerciseById, DeleteExercisebyId, UpdateAExerciseById } = require('../controllers/WorkoutController');
 const { getAllUsersContoller, deleteUser } = require('../controllers/adminUserController');
+const reportController = require('../controllers/reportController');
 
 
 
@@ -91,6 +92,11 @@ router.post('/getweightbylimit', jwtMiddleware, getWeightByLimit)
 
 // get goal weight
 router.post('/getgoalweight', jwtMiddleware, getGoalWeigtht)
+
+
+// _________________________________________OVERALL REPORT 
+
+router.get('/report',jwtMiddleware , reportController)
 
 
 
