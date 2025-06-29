@@ -8,6 +8,8 @@ const { addCalorieIntake, getCalorieByDate, getCalorieByLimit, getGoalCalorie } 
 const { addSleepController, getSleepByDate, getSleepByLimit, getGoalSleep } = require('../controllers/SleepController');
 const { addWaterIntakecontroller, getWaterByDate, getWaterByLimit, getGoalWaterIntake } = require('../controllers/waterController');
 const { addWeightController, getWeightbyDate, getWeightByLimit, getGoalWeigtht } = require('../controllers/weightContoller');
+const checkAdminToken = require('../middleware/checkAdminToken');
+const { addMuscleGroupController, addExercise, getWorkoutById, getAllWorkouts, getAllExerciseById, DeleteExercisebyId, UpdateAExerciseById } = require('../controllers/WorkoutController');
 
 
 
@@ -90,6 +92,28 @@ router.post('/getgoalweight', jwtMiddleware, getGoalWeigtht)
 // ------------------ADMIN------------------------
 router.post('/registeradmin',adminRegisterController)
 router.post('/loginadmin',adminLoginController)
+
+// ____________________workout for admin____________
+// add musclegroups
+router.post('/workout', checkAdminToken, addMuscleGroupController)
+
+// add musclegroups
+router.post('/workout/:id', checkAdminToken, addExercise)
+
+// get musclegroups
+router.get('/workout/:id', checkAdminToken, getWorkoutById)
+
+// get ALL musclegroups
+router.get('/workout', checkAdminToken, getAllWorkouts)
+
+// get ALL exercises by workout id
+router.get('/workout/:id/exercises', checkAdminToken, getAllExerciseById)
+
+// delete  exercises by  id ~ workout id 
+router.delete('/workout/:workoutId/exercises/:exerciseId', checkAdminToken, DeleteExercisebyId)
+
+// update  exercises by  id ~ workout id 
+router.put('/workout/:workoutId/exercises/:exerciseId', checkAdminToken, UpdateAExerciseById)
 
 
 

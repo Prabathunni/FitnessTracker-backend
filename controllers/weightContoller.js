@@ -158,7 +158,6 @@ exports.getGoalWeigtht = async (req, res) => {
 
 
 
-
 function getLastDaysEntries(entries, numberOfDays) {
     const now = new Date();
     const startDay = new Date();

@@ -126,6 +126,7 @@ exports.logoutUserContoller = (req, res) => {
 }
 
 
+//____________________________ADMIN CONTROLLER __________________________________
 
 exports.adminRegisterController = async (req, res) => {
     console.log("in register controller");
@@ -160,7 +161,6 @@ exports.adminRegisterController = async (req, res) => {
 
     }
 }
-
 
 // admin LOGIN CONTROLLER
 exports.adminLoginController = async (req, res) => {
