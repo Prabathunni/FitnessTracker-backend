@@ -10,9 +10,11 @@ const { addWaterIntakecontroller, getWaterByDate, getWaterByLimit, getGoalWaterI
 const { addWeightController, getWeightbyDate, getWeightByLimit, getGoalWeigtht } = require('../controllers/weightContoller');
 const checkAdminToken = require('../middleware/checkAdminToken');
 const { addMuscleGroupController, addExercise, getWorkoutById, getAllWorkouts, getAllExerciseById, DeleteExercisebyId, UpdateAExerciseById } = require('../controllers/WorkoutController');
+const { getAllUsersContoller, deleteUser } = require('../controllers/adminUserController');
 
 
 
+// -------------------------------------------------USER AUTH----------------------------
 // register
 router.post('/register', registerController)
 // login
@@ -27,6 +29,10 @@ router.get('/verifytoken', verifyToken )
 // logout the user
 router.get('/logout',jwtMiddleware, logoutUserContoller)
 
+// --------------------------------------------------------------------------------------
+
+
+// ####################### validation required for later..............
 // get All muscle groups
 router.get('/musclegroups',jwtMiddleware, allMuscleGroup)
 
@@ -89,11 +95,11 @@ router.post('/getgoalweight', jwtMiddleware, getGoalWeigtht)
 
 
 
-// ------------------ADMIN------------------------
+// -----------------------------------------------------ADMIN AUTH------------------------
 router.post('/registeradmin',adminRegisterController)
 router.post('/loginadmin',adminLoginController)
 
-// ____________________workout for admin____________
+// ____________________workout routes for admin____________
 // add musclegroups
 router.post('/workout', checkAdminToken, addMuscleGroupController)
 
@@ -114,6 +120,17 @@ router.delete('/workout/:workoutId/exercises/:exerciseId', checkAdminToken, Dele
 
 // update  exercises by  id ~ workout id 
 router.put('/workout/:workoutId/exercises/:exerciseId', checkAdminToken, UpdateAExerciseById)
+
+
+// _______________________________USER ROUTES ~ADMIN____________________________
+// get all USers
+router.get('/users', checkAdminToken, getAllUsersContoller)
+
+// delete user by id
+router.delete('/users/:id', checkAdminToken, deleteUser)
+
+// get a user by id----------------------------------------------------valid for later----
+// router.get('/users', checkAdminToken, getAllUsersContoller)
 
 
 
