@@ -129,6 +129,8 @@ const reportController = async (req, res) => {
             const latestEntry = userCalories.reduce((latest, current) =>
                 new Date(current.date) > new Date(latest.date) ? current : latest
             );
+            console.log(latestEntry);
+            
 
             const latestDate = new Date(latestEntry.date);
 
@@ -138,6 +140,9 @@ const reportController = async (req, res) => {
                 latestDate.getMonth(),
                 latestDate.getDate()
             );
+
+            console.log(latestDateOnly);
+            
 
             const entriesOnLatestDate = userCalories.filter(entry => {
                 const entryDate = new Date(entry.date);
@@ -215,9 +220,9 @@ const reportController = async (req, res) => {
             {
                 name: "WATER INTAKE",
                 value: totalWaterOfDay ?? 0,
-                unit: "Ml",
+                unit: "ML",
                 goal: goalWaterIntake,
-                goalUnit: "Ml"
+                goalUnit: "ML"
             },
             {
                 name: "WEIGHT",
@@ -230,7 +235,7 @@ const reportController = async (req, res) => {
         ]
 
 
-        res.status(200).json({ Report })
+        res.status(200).json(createResponse(true,Report,null))
 
 
 

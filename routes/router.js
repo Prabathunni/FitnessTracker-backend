@@ -99,6 +99,14 @@ router.post('/getgoalweight', jwtMiddleware, getGoalWeigtht)
 router.get('/report',jwtMiddleware , reportController)
 
 
+// __________________________________________WOKROUT FOR USERS
+// get ALL musclegroups
+router.get('/workout', jwtMiddleware, getAllWorkouts)
+// get a workout by id
+router.get('/workout/:id', jwtMiddleware, getWorkoutById)
+
+
+
 
 
 // -----------------------------------------------------ADMIN AUTH------------------------
@@ -109,10 +117,10 @@ router.post('/loginadmin',adminLoginController)
 // add musclegroups
 router.post('/workout', checkAdminToken, addMuscleGroupController)
 
-// add musclegroups
+// add Exercise
 router.post('/workout/:id', checkAdminToken, addExercise)
 
-// get musclegroups
+// get a musclegroups
 router.get('/workout/:id', checkAdminToken, getWorkoutById)
 
 // get ALL musclegroups

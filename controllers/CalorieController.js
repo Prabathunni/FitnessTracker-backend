@@ -192,6 +192,23 @@ exports.getCalorieByLimit = async (req, res) => {
 
 }
 
+exports.getLatestCalorieIntake = async (req,res) => {
+    console.log("inside get latest calorie intake controller");
+    try {
+
+        const user = await userModel.findById(req,userId)
+        const calorieSortArr = user.calorieIntake.sort((a, b) => new Date(b.date) - new Date(a.date))[0];
+        if(calorieSortArr===0){
+            res.status(404).json(createResponse(false,"no calorie recors",false))
+        }
+        
+        
+    } catch (error) {
+        res.status(500).json(createResponse(false, "something went wrong", error.message))
+    }
+    
+}
+
     // CURRENTLY UPDATION FOR LATER...
 exports.deleteCalorie = async (req, res) => {
     // 
