@@ -35,7 +35,7 @@ router.get('/logout',jwtMiddleware, logoutUserContoller)
 
 // ####################### validation required for later..............
 // get All muscle groups
-router.get('/musclegroups',jwtMiddleware, allMuscleGroup)
+// router.get('/musclegroups',jwtMiddleware, allMuscleGroup)
 
 
 // -----------------------CALORIE ROUTER--------------------------------

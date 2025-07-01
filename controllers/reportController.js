@@ -12,7 +12,7 @@ function createResponse(ok, response, error) {
 
 // --------------------sleep functions
 
-function getTotalSleep(entries) {
+function getTotalSleep(entries, todayOnly) {
 
     // find the latest date
     const dates = entries.map(entry => new Date(entry.date).toDateString())
@@ -25,14 +25,17 @@ function getTotalSleep(entries) {
 
     //  calculate total sleep durationInHr ( logic for total calculation )
 
-    const totalSleep = latestEntires.reduce((sum, entry) => sum + entry.durationInHr, 0)
+    const isToday = new Date(latestDate).toDateString() === todayOnly.toDateString();
 
-    return totalSleep;
+    let totalSleep = isToday ?
+        totalSleep = latestEntires.reduce((sum, entry) => sum + entry.durationInHr, 0)
+        : 0;
+    return totalSleep
 
 }
 
 // ----------------------water function
-function getTotalWater(entries) {
+function getTotalWater(entries, todayOnly) {
 
     // find the latest date
     const dates = entries.map(entry => new Date(entry.date).toDateString())
@@ -43,8 +46,14 @@ function getTotalWater(entries) {
         return new Date(entry.date).toDateString() === latestDate;
     })
 
+    const isToday = new Date(latestDate).toDateString() === todayOnly.toDateString();
+
+
     //  calculate total water takenMl ( logic for total calculation )
-    const totalwater = latestEntires.reduce((sum, entry) => sum + entry.waterTakenInMl, 0)
+
+    let totalwater = isToday ?
+        latestEntires.reduce((sum, entry) => sum + entry.waterTakenInMl, 0)
+        : 0;
 
     return totalwater;
 
@@ -57,6 +66,12 @@ const reportController = async (req, res) => {
     try {
 
         const user = await userModel.findById(req.userId)
+
+        // For Compare the latest Date and today for refreshing 
+        const today = new Date();
+        const todayOnly = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+
+
 
         // ___________________________________________________GOAL AND DAILY CALORIE INTAKE
         const activityFactors = {
@@ -129,8 +144,7 @@ const reportController = async (req, res) => {
             const latestEntry = userCalories.reduce((latest, current) =>
                 new Date(current.date) > new Date(latest.date) ? current : latest
             );
-            console.log(latestEntry);
-            
+
 
             const latestDate = new Date(latestEntry.date);
 
@@ -141,8 +155,7 @@ const reportController = async (req, res) => {
                 latestDate.getDate()
             );
 
-            console.log(latestDateOnly);
-            
+
 
             const entriesOnLatestDate = userCalories.filter(entry => {
                 const entryDate = new Date(entry.date);
@@ -153,8 +166,20 @@ const reportController = async (req, res) => {
                 );
             });
 
-            // Step 3: Sum the calories
-            const totalCaloriesOnTheDay = entriesOnLatestDate.reduce((sum, entry) => sum + entry.calorieInTake, 0);
+
+            // Today comparision 
+            const isToday = latestDateOnly.getDate() === todayOnly.getDate()
+
+            // console.log(todayOnly.getTime());
+            // console.log(latestDateOnly.getTime());
+
+
+
+
+            let totalCaloriesOnTheDay = isToday ?
+                entriesOnLatestDate.reduce((sum, entry) => sum + entry.calorieInTake, 0)
+                : 0;
+
 
             valueForCaloriePerDay = Math.round(totalCaloriesOnTheDay)
 
@@ -169,9 +194,10 @@ const reportController = async (req, res) => {
         let totalSleepForTheDay = 0;
 
         if (userSleepArr.length > 0) {
-            totalSleepForTheDay = getTotalSleep(userSleepArr)
-        }
+            totalSleepForTheDay = getTotalSleep(userSleepArr, todayOnly)
+            // console.log(totalSleepForTheDay);
 
+        }
 
         // _______________________________________________________________Water goal and total
 
@@ -188,16 +214,31 @@ const reportController = async (req, res) => {
         const userWaterArr = user.waterIntake;
 
         if (userWaterArr.length > 0) {
-            totalWaterOfDay = getTotalWater(userWaterArr)
+            totalWaterOfDay = getTotalWater(userWaterArr, todayOnly)
         }
 
 
         // ________________________________________________________________________weight total and goal
+        const userWeightedArr = user.weight;
+
+        const latestWeightEntry = userWeightedArr.reduce((latest, current) =>
+            new Date(current.date) > new Date(latest.date) ? current : latest
+        );
+
+        const latestWeight = latestWeightEntry.weight
+
+        // console.log(latestWeight);
+        
+
         let weeks = 4;
         const calorieDiffPerDay = goalCalorieTarget - (BMR * activityMultiplier);
         const calorieDiffPerWeek = calorieDiffPerDay * 7;
         const weightChangePerWeek = calorieDiffPerWeek / 7700; // 1kg ≈ 7700 kcal
-        const projectedWeight = Math.round((weight + (weightChangePerWeek * weeks)) * 10) / 10;
+        const projectedWeight = Math.round((latestWeight + (weightChangePerWeek * weeks)) * 10) / 10;
+
+
+
+
 
 
 
@@ -212,7 +253,7 @@ const reportController = async (req, res) => {
             },
             {
                 name: "SLEEP",
-                value: totalSleepForTheDay ?? 0,
+                value: totalSleepForTheDay,
                 unit: "Hrs",
                 goal: targetSleepInHrs,
                 goalUnit: "Hrs"
@@ -226,7 +267,7 @@ const reportController = async (req, res) => {
             },
             {
                 name: "WEIGHT",
-                value: weight,
+                value: latestWeight,
                 unit: "KG",
                 goal: Math.round(projectedWeight),
                 goalUnit: "KG"
@@ -235,7 +276,7 @@ const reportController = async (req, res) => {
         ]
 
 
-        res.status(200).json(createResponse(true,Report,null))
+        res.status(200).json(createResponse(true, Report, null))
 
 
 
