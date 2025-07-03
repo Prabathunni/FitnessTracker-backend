@@ -178,7 +178,7 @@ exports.UpdateAExerciseById = async (req, res) => {
             }
         );
         if (result.modifiedCount === 0) {
-            return res.status(404).json(createResponse(false, "Exercise not found or no changes made", null));
+            return res.status(404).json(createResponse(false, "No changes made", null));
         }
 
         res.status(200).json(createResponse(true, "Updated Successfully", null));

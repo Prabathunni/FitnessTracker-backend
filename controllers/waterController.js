@@ -37,7 +37,7 @@ exports.getWaterByDate = async (req, res) => {
     try {
         const { date } = req.body;
         if (!date) {
-            res.status(403).json(createResponse(false, "Provide date", null))
+            res.status(404).json(createResponse(false, "Provide date", null))
 
         }
 
@@ -45,12 +45,12 @@ exports.getWaterByDate = async (req, res) => {
         const user = await userModel.findById(req.userId)
         const userWaterArr = user.waterIntake;
         if (userWaterArr.length == 0) {
-            res.status(403).json(createResponse(false, "No Records Found", null))
+            res.status(404).json(createResponse(false, "No Records Found", null))
         }
 
         const userWaterIntakes = filterByDate(userWaterArr, date)
         if (userWaterIntakes.length == 0) {
-            res.status(403).json(createResponse(false, "No Records Found", null))
+            res.status(404).json(createResponse(false, "No Records Found", null))
         }
 
         res.status(200).json(createResponse(true, userWaterIntakes, null))
