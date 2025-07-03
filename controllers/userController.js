@@ -126,19 +126,19 @@ exports.logoutUserContoller = (req, res) => {
 }
 
 // Provide user Details for profile
-exports.fetchUserDetailsController = async (req,res) => {
+exports.fetchUserDetailsController = async (req, res) => {
     console.log("Inside fetch user Details controller");
     try {
 
         const user = await userModel.findById(req.userId)
-        if(user){
+        if (user) {
             res.status(200).json(user);
-        }else{
+        } else {
             res.status(404).json("Please Login");
         }
-        
+
     } catch (error) {
-       res.status(500).json(error) 
+        res.status(500).json(error)
     }
 }
 
@@ -224,5 +224,23 @@ exports.adminLoginController = async (req, res) => {
 
 
 }
+
+// logout Admin
+exports.logoutAdminController = async (req, res) => {
+    console.log("inside logout controller");
+    try {
+        res.clearCookie("token", {
+            httpOnly: true,
+            secure: false,
+        })
+
+        res.status(200).json("logout successfull")
+
+
+    } catch (error) {
+        res.status(500).json(createResponse(false, "something went wrong", error.message))
+    }
+}
+
 
 

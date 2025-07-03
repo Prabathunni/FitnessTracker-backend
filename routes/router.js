@@ -1,6 +1,6 @@
 const express = require('express')
 const router = express.Router();
-const { registerController, loginController, logoutUserContoller, adminRegisterController, adminLoginController, fetchUserDetailsController } = require('../controllers/userController');
+const { registerController, loginController, logoutUserContoller, adminRegisterController, adminLoginController, fetchUserDetailsController, logoutAdminController } = require('../controllers/userController');
 const jwtMiddleware = require('../middleware/jwtMiddleware');
 const {verifyToken, protectedRoutesController } = require('../controllers/verifyController');
 const allMuscleGroup = require('../controllers/muscleGroupController');
@@ -10,7 +10,7 @@ const { addWaterIntakecontroller, getWaterByDate, getWaterByLimit, getGoalWaterI
 const { addWeightController, getWeightbyDate, getWeightByLimit, getGoalWeigtht } = require('../controllers/weightContoller');
 const checkAdminToken = require('../middleware/checkAdminToken');
 const { addMuscleGroupController, addExercise, getWorkoutById, getAllWorkouts, getAllExerciseById, DeleteExercisebyId, UpdateAExerciseById } = require('../controllers/WorkoutController');
-const { getAllUsersContoller, deleteUser } = require('../controllers/adminUserController');
+const { getAllUsersContoller, deleteUser, getaUserByIdController } = require('../controllers/adminUserController');
 const reportController = require('../controllers/reportController');
 
 
@@ -116,6 +116,9 @@ router.get('/workout/:id', jwtMiddleware, getWorkoutById)
 // -----------------------------------------------------ADMIN AUTH------------------------
 router.post('/registeradmin',adminRegisterController)
 router.post('/loginadmin',adminLoginController)
+router.get('/logoutadmin',checkAdminToken, logoutAdminController)
+
+
 
 // ____________________workout routes for admin____________
 // add musclegroups
@@ -124,7 +127,7 @@ router.post('/workout', checkAdminToken, addMuscleGroupController)
 // add Exercise
 router.post('/workout/:id', checkAdminToken, addExercise)
 
-// get a musclegroups
+// get a musclegroups by id-------------------------------------validation for frontend**
 router.get('/workout/:id', checkAdminToken, getWorkoutById)
 
 // get ALL musclegroups
@@ -148,7 +151,7 @@ router.get('/users', checkAdminToken, getAllUsersContoller)
 router.delete('/users/:id', checkAdminToken, deleteUser)
 
 // get a user by id----------------------------------------------------valid for later----
-// router.get('/users', checkAdminToken, getAllUsersContoller)
+router.get('/users/user/:id', checkAdminToken, getaUserByIdController)
 
 
 

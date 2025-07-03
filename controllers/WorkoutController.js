@@ -42,6 +42,9 @@ exports.addExercise = async (req, res) => {
         const workouts = await workoutModel.findById(req.params.id)
         const { exercise, videoUrl, sets, reps, rest, description } = req.body;
 
+        // console.log(workouts);
+        
+
         if (!exercise || !videoUrl || !sets || !reps || !rest || !description) {
             res.status(404).json(createResponse(false, "Provide All Inputs", null))
         }
@@ -57,7 +60,7 @@ exports.addExercise = async (req, res) => {
 
         await workouts.save()
 
-        res.status(201).json(createResponse(true, workouts, null))
+        res.status(201).json(createResponse(true, "Added Successfully", null))
 
 
     } catch (error) {
@@ -68,7 +71,7 @@ exports.addExercise = async (req, res) => {
 
 }
 
-
+// for later addon
 exports.getWorkoutById = async (req, res) => {
 
     console.log("Inside get workout by id controller");
@@ -96,7 +99,7 @@ exports.getAllWorkouts = async (req, res) => {
 
     try {
         const workouts = await workoutModel.find()
-        if (workouts.length == 0) {
+        if (workouts.length === 0) {
             res.status(404).json(createResponse(false, "NO WORKOUTS ...", null))
         }
 

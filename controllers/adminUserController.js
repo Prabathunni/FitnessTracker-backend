@@ -19,6 +19,24 @@ exports.getAllUsersContoller = async (req, res) => {
 
 }
 
+exports.getaUserByIdController = async (req, res) => {
+    console.log("Inside get a  User controller");
+
+    try {
+        const user = await userModel.findById(req.params.id);
+
+        if (!user) {
+            res.status(404).json(createResponse(false, "User not Found", null))
+        }
+
+        res.status(200).json(createResponse(true, user, null))
+
+    } catch (error) {
+        res.status(500).json(createResponse(false, "something went wrong", error.message))
+    }
+
+}
+
 exports.deleteUser = async (req, res) => {
     console.log("Inside delete User controller");
 
