@@ -18,7 +18,6 @@ app.use(cors({
 
 app.use(router)
 
-
 app.get('/', (req,res)=>{
     res.send('HEEEEELLOOOOOOO fitness tracker server')
 })

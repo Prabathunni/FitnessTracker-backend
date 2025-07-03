@@ -85,9 +85,7 @@ exports.loginController = async (req, res) => {
                 })                   //cookie set up
 
 
-                res.status(200).json({
-                    token, existingUser
-                })
+                res.status(200).json("Logging In...")
 
             } else {
                 res.status(404).json("Invalid Password...")
@@ -96,7 +94,7 @@ exports.loginController = async (req, res) => {
 
 
         } else {
-            res.status(401).json("Account does not exist...")
+            res.status(404).json("Account does not exist...")
         }
 
     } catch (error) {
@@ -120,7 +118,7 @@ exports.logoutUserContoller = (req, res) => {
 
     } catch (error) {
 
-        res.status(500).json({ message: "error bro", error })
+        res.status(500).json({ message: "Something Went Wrong", error })
 
     }
 }
@@ -214,7 +212,7 @@ exports.adminLoginController = async (req, res) => {
 
 
         } else {
-            res.status(401).json("Unauthenticated Admin")
+            res.status(404).json("Unauthenticated Admin")
         }
 
     } catch (error) {
