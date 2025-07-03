@@ -1,5 +1,7 @@
 const userModel = require('../model/userModel')
 
+
+// water quantiy logic-----------bugg!!
 exports.addWaterIntakecontroller = async (req, res) => {
 
     console.log("In add water controller");
@@ -69,13 +71,13 @@ exports.getWaterByLimit = async (req, res) => {
 
         const { limit } = req.body;
         if (!limit) {
-            res.status(403).json(createResponse(false, "Provide ;imit", null))
+            res.status(404).json(createResponse(false, "Provide ;imit", null))
         }
 
         const user = await userModel.findById(req.userId)
         const userWaterArr = user.waterIntake
         if (userWaterArr.length == 0) {
-            res.status(403).json(createResponse(false, "No Records Found", null))
+            res.status(404).json(createResponse(false, "No Records Found", null))
         }
 
         switch (limit) {
@@ -85,7 +87,7 @@ exports.getWaterByLimit = async (req, res) => {
             case "last7days":
                 const userWaterSevenDays = getLastDaysEntries(userWaterArr, 7)
                 if (userWaterSevenDays.length == 0) {
-                    res.status(403).json(createResponse(false, "No Records Found", null))
+                    res.status(404).json(createResponse(false, "No Records Found", null))
                 }
 
                 res.status(200).json(createResponse(true, userWaterSevenDays, null))
@@ -94,14 +96,14 @@ exports.getWaterByLimit = async (req, res) => {
             case "last10days":
                 const userWaterTenDays = getLastDaysEntries(userWaterArr, 10)
                 if (userWaterTenDays.length == 0) {
-                    res.status(403).json(createResponse(false, "No Records Found", null))
+                    res.status(404).json(createResponse(false, "No Records Found", null))
                 }
 
                 res.status(200).json(createResponse(true, userWaterTenDays, null))
 
                 break;
             default:
-                return res.status(403).json(createResponse(false, "limit not matched", null))
+                return res.status(404).json(createResponse(false, "limit not matched", null))
         }
 
 

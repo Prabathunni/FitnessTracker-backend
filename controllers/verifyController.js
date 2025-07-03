@@ -16,7 +16,9 @@ exports.verifyToken = async (req,res) =>{
     })
 }
 
-exports.protectedRoutesController = (req, res) => {
-    res.json({ message: "Access granted", userId: req.userId });
-}
+
+
+// exports.protectedRoutesController = (req, res) => {
+//     res.json({ message: "Access granted", userId: req.userId });
+// }
 

@@ -27,7 +27,7 @@ exports.addCalorieIntake = async (req, res) => {
                 quantityInGrams = quantity * 1000
                 break;
             default:
-                return res.status(400).json(createResponse(false, "Unit not matched", null))
+                return res.status(200).json(createResponse(false, "Unit not matched", null))
         }
 
         const arrageString = (str) => str.toLowerCase().replace(/[^a-z]/g, '')
@@ -38,7 +38,7 @@ exports.addCalorieIntake = async (req, res) => {
         ))
 
         if (foodItem.length === 0) {
-            res.status(404).json(createResponse(false, "Food item not found", null))
+            res.status(200).json(createResponse(false, "Food item not found", null))
         }
 
 
@@ -77,9 +77,8 @@ exports.getCalorieByDate = async (req, res) => {
     console.log("inside get calorie by Date controller");
     const { date } = req.body;
     if (!date) {
-        res.status(404).json(createResponse(false, "provide date,sleep In Hr", null))
+         res.status(200).json(createResponse(false, "provide date,sleep In Hr", null))
     }
-
 
     try {
         const searchDate = new Date(date)
@@ -95,11 +94,13 @@ exports.getCalorieByDate = async (req, res) => {
             date: { $gte: startofThDay, $lte: endOfTheDay },
         })
 
+        
+
         if (userCalorieDocument.length == 0) {
-            res.status(404).json(createResponse(false, "No Calorie Data Found on that Date", null))
+             res.status(200).json(createResponse(false, "No Calorie Data Found on that Date", null))
         }
 
-        res.status(200).json(userCalorieDocument)
+        return res.status(200).json(userCalorieDocument)
 
     } catch (error) {
         res.status(500).json(createResponse(false, "Something went wrong", error.message))
@@ -174,14 +175,14 @@ exports.getCalorieByLimit = async (req, res) => {
                 break;
 
             default:
-                return res.status(404).json(createResponse(false, "provide valid Limit", null))
+                return res.status(200).json(createResponse(false, "provide valid Limit", null))
         }
 
 
         // short function for above case statements
         function providValues(docObject) {
             if (docObject.length == 0) {
-                return res.status(404).json(createResponse(false, "No Calorie Data found", null))
+                return res.status(200).json(createResponse(false, "No Calorie Data found", null))
             }
             return res.status(200).json(docObject)
         }

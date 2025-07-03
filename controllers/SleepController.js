@@ -21,7 +21,7 @@ exports.addSleepController = async (req, res) => {
         })
         await user.save()
 
-        res.status(200).json(createResponse(true, user.sleep, null))
+        res.status(200).json(createResponse(true, "Updated Successfully", null))
 
 
     } catch (error) {

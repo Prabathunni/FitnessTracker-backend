@@ -1,6 +1,6 @@
 const express = require('express')
 const router = express.Router();
-const { registerController, loginController, logoutUserContoller, adminRegisterController, adminLoginController } = require('../controllers/userController');
+const { registerController, loginController, logoutUserContoller, adminRegisterController, adminLoginController, fetchUserDetailsController } = require('../controllers/userController');
 const jwtMiddleware = require('../middleware/jwtMiddleware');
 const {verifyToken, protectedRoutesController } = require('../controllers/verifyController');
 const allMuscleGroup = require('../controllers/muscleGroupController');
@@ -21,14 +21,18 @@ router.post('/register', registerController)
 // login
 router.post('/login', loginController)
 
-// protected routing checkup   -----need to go through again!!!!!
-router.get('/checklogin', jwtMiddleware, protectedRoutesController )
+// // protected routing checkup   -----need to go through again!!!!!
+// router.get('/checklogin', jwtMiddleware, protectedRoutesController )
 
 // verify token 
 router.get('/verifytoken', verifyToken )
 
 // logout the user
 router.get('/logout',jwtMiddleware, logoutUserContoller)
+
+
+// fetch user details for header
+router.get('/userfetch', jwtMiddleware, fetchUserDetailsController)
 
 // --------------------------------------------------------------------------------------
 

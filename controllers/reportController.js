@@ -202,7 +202,7 @@ const reportController = async (req, res) => {
         // _______________________________________________________________Water goal and total
 
         let goalWaterIntake;
-        let totalWaterOfDay = 0;
+        let totalWaterOfDay;
 
         if (gender == "male") {
             goalWaterIntake = 3700

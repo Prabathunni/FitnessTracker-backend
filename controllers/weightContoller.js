@@ -9,7 +9,7 @@ exports.addWeightController = async (req, res) => {
     try {
         const { date, weight } = req.body;
         if (!date || !weight) {
-            res.status(401).json(createResponse(false, "Provide all Inputs", null))
+            res.status(404).json(createResponse(false, "Provide all Inputs", null))
         }
 
         const addDate = new Date(date)
@@ -21,7 +21,7 @@ exports.addWeightController = async (req, res) => {
 
         await user.save()
 
-        res.status(200).json(createResponse(true, user, null))
+        res.status(200).json(createResponse(true, "Weight Updated Successfully", null))
 
     } catch (error) {
         res.status(500).json(createResponse(false, "something went wrong", error.message))
