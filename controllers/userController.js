@@ -70,12 +70,19 @@ exports.loginController = async (req, res) => {
     try {
 
         const existingUser = await userModel.findOne({ email })
+        console.log(existingUser.status);
+        
 
         if (existingUser) {
 
             let isMatch = await bcrypt.compare(password, existingUser.password)
 
             if (isMatch) {
+
+                if(existingUser?.status=="banned"){
+                    return res.status(404).json("You Are A Banned User!")
+                }
+
                 const token = jwt.sign({ userId: existingUser._id }, process.env.jwt_secret) // token setup
 
                 res.cookie("token", token, {

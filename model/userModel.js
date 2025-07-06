@@ -94,7 +94,12 @@ const userSchema = new mongoose.Schema({
                 type: Number
             }
         }
-    ]
+    ],
+    status: {
+        type: String,
+        default: 'active',
+        enum: ['active', 'banned']
+    },
 
 }, { timestamps: true })
 

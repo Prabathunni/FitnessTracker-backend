@@ -58,6 +58,40 @@ exports.deleteUser = async (req, res) => {
 }
 
 
+exports.blockUser = async (req, res) => {
+    console.log("Inside block User controller");
+
+    const { userId } = req.body;
+
+    try {
+        const user = await userModel.findById(userId);
+        if (!user) {
+            res.status(404).json(createResponse(false, "User not Found", null))
+        }
+
+        // Check if the user is already blocked
+        if (user.status === 'banned') {
+            // Unblock the user
+            user.status = 'active';
+            res.status(200).json(createResponse(true, "User unblocked successfully", null))
+
+        } else {
+
+            // Block the user
+            user.status = 'banned';
+            res.status(200).json(createResponse(true, "User Blocked successfully", null))
+
+        }
+        await user.save();
+
+
+    } catch (error) {
+        res.status(500).json(createResponse(false, "something went wrong", error.message))
+    }
+
+}
+
+
 function createResponse(ok, response, error) {
     return ({
         ok,

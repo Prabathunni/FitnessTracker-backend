@@ -10,7 +10,7 @@ const { addWaterIntakecontroller, getWaterByDate, getWaterByLimit, getGoalWaterI
 const { addWeightController, getWeightbyDate, getWeightByLimit, getGoalWeigtht } = require('../controllers/weightContoller');
 const checkAdminToken = require('../middleware/checkAdminToken');
 const { addMuscleGroupController, addExercise, getWorkoutById, getAllWorkouts, getAllExerciseById, DeleteExercisebyId, UpdateAExerciseById } = require('../controllers/WorkoutController');
-const { getAllUsersContoller, deleteUser, getaUserByIdController } = require('../controllers/adminUserController');
+const { getAllUsersContoller, deleteUser, getaUserByIdController, blockUser } = require('../controllers/adminUserController');
 const reportController = require('../controllers/reportController');
 
 
@@ -149,6 +149,9 @@ router.get('/users', checkAdminToken, getAllUsersContoller)
 
 // delete user by id
 router.delete('/users/:id', checkAdminToken, deleteUser)
+
+// block user by id---------------------------------valid for later----------------
+router.patch('/blockuser', checkAdminToken, blockUser)
 
 // get a user by id----------------------------------------------------valid for later----
 router.get('/users/user/:id', checkAdminToken, getaUserByIdController)
