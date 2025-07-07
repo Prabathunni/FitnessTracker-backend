@@ -181,7 +181,7 @@ exports.getCalorieByLimit = async (req, res) => {
 
         // short function for above case statements
         function providValues(docObject) {
-            if (docObject.length == 0) {
+            if (docObject.length === 0) {
                 return res.status(404).json(createResponse(false, "No Calorie Data found", null))
             }
             return res.status(200).json(docObject)

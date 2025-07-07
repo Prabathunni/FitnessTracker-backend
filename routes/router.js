@@ -1,6 +1,6 @@
 const express = require('express')
 const router = express.Router();
-const { registerController, loginController, logoutUserContoller, adminRegisterController, adminLoginController, fetchUserDetailsController, logoutAdminController } = require('../controllers/userController');
+const { registerController, loginController, logoutUserContoller, adminRegisterController, adminLoginController, fetchUserDetailsController, logoutAdminController, updateUSerDetailsController } = require('../controllers/userController');
 const jwtMiddleware = require('../middleware/jwtMiddleware');
 const {verifyToken, protectedRoutesController } = require('../controllers/verifyController');
 const allMuscleGroup = require('../controllers/muscleGroupController');
@@ -33,6 +33,9 @@ router.get('/logout',jwtMiddleware, logoutUserContoller)
 
 // fetch user details for header
 router.get('/userfetch', jwtMiddleware, fetchUserDetailsController)
+
+// Update user Datails
+router.patch('/updateuser', jwtMiddleware, updateUSerDetailsController)
 
 // --------------------------------------------------------------------------------------
 

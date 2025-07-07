@@ -1,4 +1,4 @@
-const { response } = require('express');
+const mongoose = require('mongoose');
 const userModel = require('../model/userModel')
 
 
@@ -12,8 +12,14 @@ exports.addSleepController = async (req, res) => {
             res.status(404).json(createResponse(false, "provide date,sleep In Hr", null))
         }
 
+        const checkExist = !mongoose.Types.ObjectId.isValid(req.userId)
+        console.log(checkExist);
+
+        // console.log(req.userId);
 
         const user = await userModel.findById(req.userId)
+        // console.log(user);
+
 
         user.sleep.push({
             date: new Date(date),

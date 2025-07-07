@@ -27,7 +27,9 @@ function getTotalSleep(entries, todayOnly) {
 
     const isToday = new Date(latestDate).toDateString() === todayOnly.toDateString();
 
-    let totalSleep = isToday ?
+    let totalSleep = 0;
+
+    totalSleep = isToday ?
         totalSleep = latestEntires.reduce((sum, entry) => sum + entry.durationInHr, 0)
         : 0;
     return totalSleep
@@ -196,7 +198,6 @@ const reportController = async (req, res) => {
         if (userSleepArr.length > 0) {
             totalSleepForTheDay = getTotalSleep(userSleepArr, todayOnly)
             // console.log(totalSleepForTheDay);
-
         }
 
         // _______________________________________________________________Water goal and total

@@ -71,7 +71,7 @@ exports.loginController = async (req, res) => {
 
         const existingUser = await userModel.findOne({ email })
         console.log(existingUser.status);
-        
+
 
         if (existingUser) {
 
@@ -79,7 +79,7 @@ exports.loginController = async (req, res) => {
 
             if (isMatch) {
 
-                if(existingUser?.status=="banned"){
+                if (existingUser.status === "banned") {
                     return res.status(404).json("You Are A Banned User!")
                 }
 
@@ -141,6 +141,44 @@ exports.fetchUserDetailsController = async (req, res) => {
         } else {
             res.status(404).json("Please Login");
         }
+
+    } catch (error) {
+        res.status(500).json(error)
+    }
+}
+
+
+// PROFILE UPDATEIONS
+exports.updateUSerDetailsController = async (req, res) => {
+    console.log("inside update user details controller");
+    try {
+        const { age, goal, gender, activityLevel } = req.body;
+
+        const existingUser = await userModel.findById(req.userId);
+
+        const isSameData =
+            (age === undefined || existingUser.age === age) &&
+            (goal === undefined || existingUser.goal === goal) &&
+            (gender === undefined || existingUser.gender === gender) &&
+            (activityLevel === undefined || existingUser.activityLevel === activityLevel);
+
+        if (isSameData) {
+            return res.status(200).json({ message: 'No changes Made!' });
+        }
+
+        const updatedUser = await userModel.updateOne(
+            { _id: req.userId },
+            {
+                $set: {
+                    ...(age !== undefined && { age }),
+                    ...(goal !== undefined && { goal }),
+                    ...(gender !== undefined && { gender }),
+                    ...(activityLevel !== undefined && { activityLevel }),
+                }
+            }
+        );
+
+         res.status(200).json({ message: 'Profile updated successfully', updatedUser });
 
     } catch (error) {
         res.status(500).json(error)
